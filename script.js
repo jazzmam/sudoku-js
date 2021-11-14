@@ -31,3 +31,5 @@ function createSudokValues() {
 
 console.log(createSudokValues());
 
+// CREATE ARRAY OF ARRAYs FOR THE LINE ADDING INDEXES
+// CREATE COLUMNS
