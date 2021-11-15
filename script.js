@@ -1,47 +1,51 @@
 let sudoku = [];
-let consoledSudoku = '';
+let row = [];
 
 function generateRandomNumber() {
 	return Math.floor(Math.random() * 9 + 1);
 }
 
 function createSudokValues() {
-	for (let x = 1; x <= 9; x++) {
-		let iterationsAmount = 0;
-		let randomNumber = generateRandomNumber();
-		var isDigitExistentInRow = sudoku.some(square=> square.digit === randomNumber);
+	for (let y = 1; y <= 9; y++) {
+		for (let x = 1; x <= 9; x++) {
+			let iterationsAmount = 0;
+			let randomNumber = generateRandomNumber();
+			var isDigitExistentInRow = row.some(square=> square.digit === randomNumber);
 
-		if (!isDigitExistentInRow) {
-			sudoku.push(
-				{
-					digit: randomNumber,
-					index: x,
+			if (!isDigitExistentInRow) {
+				row.push(
+					{
+						digit: randomNumber,
+						index: x,
+						shown: true
+					}
+				);
+			} else {
+				while (iterationsAmount <= 10) {
+					randomNumber = generateRandomNumber();
+					isDigitExistentInRow = row.some(square=> square.digit === randomNumber);
+
+					if (!isDigitExistentInRow) {
+						row.push(
+							{
+								digit: randomNumber,
+								index: x,
+								shown: true
+							}
+						);
+						break;	
+					}
+
+					iterationsAmount += 1;
 				}
-			);
-		} else {
-			while (iterationsAmount <= 10) {
-				randomNumber = generateRandomNumber();
-				isDigitExistentInRow = sudoku.some(square=> square.digit === randomNumber);
-
-				if (!isDigitExistentInRow) {
-					sudoku.push(
-						{
-							digit: randomNumber,
-							index: x,
-						}
-					);
-					break;	
-				}
-
-				iterationsAmount += 1;
 			}
-		}
-	}
 
-	return sudoku;
+			var fullSudoku = sudoku.concat(row);
+			// inner for
+		}
+
+	return fullSudoku;
+	}
 }
 
 console.log(createSudokValues());
-
-// CREATE ARRAY OF ARRAYs FOR THE LINE ADDING INDEXES
-// CREATE COLUMNS
