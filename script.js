@@ -7,17 +7,29 @@ function generateRandomNumber() {
 
 function createSudokValues() {
 	for (let x = 1; x <= 9; x++) {
-		var iterationsAmount = 0;
-		var randomNumber = generateRandomNumber();
+		let iterationsAmount = 0;
+		let randomNumber = generateRandomNumber();
+		var isDigitExistentInRow = sudoku.some(square=> square.digit === randomNumber);
 
-		if (!sudoku.includes(randomNumber)) {
-			sudoku.push(randomNumber);
+		if (!isDigitExistentInRow) {
+			sudoku.push(
+				{
+					digit: randomNumber,
+					index: x,
+				}
+			);
 		} else {
 			while (iterationsAmount <= 10) {
 				randomNumber = generateRandomNumber();
+				isDigitExistentInRow = sudoku.some(square=> square.digit === randomNumber);
 
-				if (!sudoku.includes(randomNumber)) {
-					sudoku.push(randomNumber);
+				if (!isDigitExistentInRow) {
+					sudoku.push(
+						{
+							digit: randomNumber,
+							index: x,
+						}
+					);
 					break;	
 				}
 
