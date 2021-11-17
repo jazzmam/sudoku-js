@@ -12,15 +12,23 @@ function isDigitExistentInRow(row, randomNumber) {
 }
 
 function isDigitExistentInColumn(sudoku, columnIndex, randomNumber) {
+	let digitsExistingInColumn = [];
+	const possibleOptionsForDigit = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+	let unusedDigits = [];
 	let isNumberExistent;
-	let columnSquaresByIndex;
+	// RAKE RANDOM ITEM FROM ARRAY const randomElement = array[Math.floor(Math.random() * array.length)];
 
-	columnSquaresByIndex = sudoku.filter(square=> square.index === columnIndex);
-	//console.log("columnSquaresByIndex ", columnSquaresByIndex);
-
-	isNumberExistent = columnSquaresByIndex.some(square=> square.digit === randomNumber);
+	digitsExistingInColumn = sudoku.filter(square => square.index === columnIndex).map(square => square.digit);
+	// 1 2 9
+	console.log("digitsExistingInColumn ", digitsExistingInColumn);
 	
-	console.log("COLUMN isNumberExistent ", isNumberExistent, randomNumber);
+	
+	unusedDigits = possibleOptionsForDigit.filter(digit => !digitsExistingInColumn.includes(digit));
+	console.log("unusedDigits ", unusedDigits);
+
+	//isNumberExistent = columnSquaresByIndex.some(square=> square.digit === randomNumber);
+	
+	//console.log("COLUMN isNumberExistent ", isNumberExistent, randomNumber);
 
 	return isNumberExistent;
 }
@@ -33,7 +41,7 @@ function createSudokValues() {
 			while (row.length <= 9) {
 				let randomNumber = generateRandomNumber();
 
-			//isDigitExistentInColumn(sudoku, columnIndex, randomNumber);
+			isDigitExistentInColumn(sudoku, columnIndex, randomNumber);
 //&& !isDigitExistentInColumn(sudoku, columnIndex, randomNumber)
 
 				if ( !isDigitExistentInRow(row, randomNumber)) {
