@@ -1,23 +1,28 @@
-var row = [];
-var previuosRows = [];
-var sudoku = [];
+let row = [];
+let previuosRows = [];
+let sudoku = [];
 
 function generateRandomNumber() {
 	return Math.floor(Math.random() * 9 + 1);
 }
 
 function isDigitExistentInRow(row, randomNumber) {
+	console.log("ROW isNumberExistent ", row.some(square=> square.digit === randomNumber), randomNumber );
 	return row.some(square=> square.digit === randomNumber);
 }
 
 function isDigitExistentInColumn(sudoku, columnIndex, randomNumber) {
-	let isNumberNotExistent;
-	// console.log('sudoku inside ', sudoku, "<---INSIDE")
-	// console.log('columnIndex inside ', columnIndex)
+	let isNumberExistent;
+	let columnSquaresByIndex;
 
-	// CREATE FOR HERE: isNumberNotExistent = sudoku.some(square=> square.index === columnIndex);
-//use randomNumber
-	return isNumberNotExistent;
+	columnSquaresByIndex = sudoku.filter(square=> square.index === columnIndex);
+	//console.log("columnSquaresByIndex ", columnSquaresByIndex);
+
+	isNumberExistent = columnSquaresByIndex.some(square=> square.digit === randomNumber);
+	
+	console.log("COLUMN isNumberExistent ", isNumberExistent, randomNumber);
+
+	return isNumberExistent;
 }
 
 function createSudokValues() {
@@ -27,21 +32,23 @@ function createSudokValues() {
 
 			while (row.length <= 9) {
 				let randomNumber = generateRandomNumber();
-			//	let isDigitExistentInRow = row.some(square => square.digit === randomNumber);
 
-			//	console.log("isDigitExistentInColumn FUNCTION ", isDigitExistentInColumn(sudoku, columnIndex, randomNumber));
-				
-				if ( !isDigitExistentInRow(row, randomNumber) ) {
-					row.push(
-						{
-							digit: randomNumber,
-							index: columnIndex,
-							shown: true
-						}
-					);
+			//isDigitExistentInColumn(sudoku, columnIndex, randomNumber);
+//&& !isDigitExistentInColumn(sudoku, columnIndex, randomNumber)
 
-					console.log(" Row after adding ", row)
-					break;	
+				if ( !isDigitExistentInRow(row, randomNumber)) {
+				//	if ( !isDigitExistentInColumn(sudoku, columnIndex, randomNumber)) {
+						row.push(
+							{
+								digit: randomNumber,
+								index: columnIndex,
+								shown: true
+							}
+						);
+	
+						console.log(" Row after adding ", row)
+						break;	
+				//	}
 				}
 
 				iterationsAmount += 1;
