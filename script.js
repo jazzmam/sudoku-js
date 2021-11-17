@@ -7,24 +7,7 @@ function generateRandomNumber() {
 	return Math.floor(Math.random() * 9 + 1);
 }
 
-function isDigitExistentInRow(row, randomNumber) {
-	console.log("ROW isNumberExistent ", row.some(square=> square.digit === randomNumber), randomNumber );
-	return row.some(square=> square.digit === randomNumber);
-}
-
-function randomDigitNotUsedInRow(row) {
-	let digitsExistingInRow = [];
-	let unusedDigits = [];
-	let randomDigitFromUnused = 0;
-	
-	digitsExistingInRow = row.map(square => square.digit);
-	unusedDigits = possibleOptionsForDigit.filter(digit => !digitsExistingInRow.includes(digit));	
-	randomDigitFromUnused = unusedDigits[Math.floor(Math.random() * unusedDigits.length)];
-
-	return randomDigitFromUnused;
-}
-
-function randomDigitNotUsedInColumn(sudoku, columnIndex, randomNumber) {
+function randomDigitNotUsedInColumn( sudoku, columnIndex ) {
 	let digitsExistingInColumn = [];
 	let unusedDigits = [];
 	let randomDigitFromUnused = 0;
@@ -36,43 +19,50 @@ function randomDigitNotUsedInColumn(sudoku, columnIndex, randomNumber) {
 	return randomDigitFromUnused;
 }
 
+function generateDigitUnusedInRowAndColumn( row, digitNotUsedInColumn ) {
+	let digitsExistingInRow = [];
+	let unusedDigits = [];
+	
+	digitsExistingInRow = row.map(square => square.digit);
+	unusedDigits = possibleOptionsForDigit.filter(digit => !digitsExistingInRow.includes(digit));
+
+console.log('digitNotUsedInColumn ', digitNotUsedInColumn)
+console.log('unusedDigits ', unusedDigits)
+console.log('unusedDigits.includes(digitNotUsedInColumn) ', unusedDigits.includes(digitNotUsedInColumn))
+
+	return (unusedDigits.includes(digitNotUsedInColumn) ? digitNotUsedInColumn : null);
+}
+
 function createSudokValues() {
 	for ( let y = 1; y <= 9; y++ ) {
 		for ( let columnIndex = 1; columnIndex <= 9; columnIndex++ ) {
-		//	let iterationsAmount = 0;
+		temp = [];
+			while (temp.length <= 10) {
+				let digitNotUsedInColumn = randomDigitNotUsedInColumn(sudoku, columnIndex);
+console.log('Y ', y, 'columnIndex ', columnIndex, 'digitNotUsedInColumn ', digitNotUsedInColumn)
+				let digitUnusedInRowAndColumnGenerated = generateDigitUnusedInRowAndColumn(row, digitNotUsedInColumn);
+console.log('digitUnusedInRowAndColumnGenerated ', digitUnusedInRowAndColumnGenerated)
 
-			while (row.length <= 9) {
-				//let randomNumber = generateRandomNumber();
-				let randomNumberForRow = randomDigitNotUsedInRow(row);
-				randomDigitNotUsedInColumn();
-				//let isDigitUsedInRow = isDigitExistentInRow(row, randomNumber);
-	
+				if ( digitUnusedInRowAndColumnGenerated !== null ) {
+					row.push(
+						{
+							digit: digitUnusedInRowAndColumnGenerated,
+							index: columnIndex,
+							shown: true
+						}
+					);
 
-// PASS RANDOM NUMBER TO COLUMMN FUNCTION (DIVIDE randomDigitNotUsedInColumn() onto 2 func)
-// CREATE CHECK FOR COLUMN
-
-
-			//	if ( !isDigitUsedInRow ) {
-				//	if ( !isDigitExistentInColumn(sudoku, columnIndex, randomNumber)) {
-						row.push(
-							{
-								digit: randomNumber,
-								index: columnIndex,
-								shown: true
-							}
-						);
-	
-						console.log(" Row after adding ", row)
-						break;	
-				//	}
-			//	}
-
-				//iterationsAmount += 1;
+console.log(" Row after adding ", row)
+					break;	
+				}
+temp.push(1);
 			}
+			// the end of inner loop
 		}
 		previuosRows = [ ...sudoku];
 		sudoku = [ ...previuosRows, ...row ];
 		row = [];
+		// the end of inner loop
 	}
 	return sudoku;
 }
