@@ -54,4 +54,5 @@ console.log(" Row after adding ", row)
 	return sudoku;
 }
 
+
 console.log(createSudokValues());
